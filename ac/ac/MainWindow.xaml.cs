@@ -1,11 +1,9 @@
-﻿using System;
+﻿using ac.ViewModels;
+using System;
 using System.Windows;
 
 namespace ac
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         public MainWindow()
@@ -15,7 +13,7 @@ namespace ac
 
         private void btnExit_Click(object sender, RoutedEventArgs e)
         {
-            Environment.Exit(0);   
+            Environment.Exit(0);
         }
     }
 }
