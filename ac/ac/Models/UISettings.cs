@@ -2,7 +2,7 @@
 
 namespace ac.Models
 {
-    internal class UISettings : INotifyPropertyChanged
+    public class UISettings : INotifyPropertyChanged
     {
         private bool _isActive;
         public bool IsActive
