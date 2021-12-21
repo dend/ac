@@ -6,8 +6,12 @@
         xmlns:local="clr-namespace:ac"
         DataContext="{StaticResource MainWindowViewModel, PresentationTraceSources.TraceLevel=High}"
         mc:Ignorable="d"
+        xmlns:converters="clr-namespace:ac.Converters"
         Title="AC 0.0.1" Width="500"
         SizeToContent="Height">
+    <Window.Resources>
+        <converters:StateToButtonLabelConverter x:Key="StateToButtonLabelConverter"></converters:StateToButtonLabelConverter>
+    </Window.Resources>
     <Grid>
         <StackPanel>
             <GroupBox Margin="12" Header="Mouse">
@@ -21,7 +25,7 @@
             </GroupBox>
             <StackPanel HorizontalAlignment="Right" Margin="12,0,12,12" Orientation="Horizontal">
                 <Button x:Name="btnExit" Width="80" Content="Exit" Click="btnExit_Click"></Button>
-                <Button x:Name="btnTrigger" Width="80" Margin="12,0,0,0"  Content="Start"></Button>
+                <Button x:Name="btnTrigger" Width="80" Margin="12,0,0,0"  Content="{Binding UISettingsContainer.IsActive, Converter={StaticResource StateToButtonLabelConverter}}" Click="btnTrigger_Click"></Button>
             </StackPanel>
         </StackPanel>
     </Grid>

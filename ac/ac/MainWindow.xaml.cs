@@ -15,5 +15,11 @@ namespace ac
         {
             Environment.Exit(0);
         }
+
+        private void btnTrigger_Click(object sender, RoutedEventArgs e)
+        {
+            UISettingsViewModel context = DataContext as UISettingsViewModel;
+            context.UISettingsContainer.IsActive = !context.UISettingsContainer.IsActive;
+        }
     }
 }

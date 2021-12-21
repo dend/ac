@@ -4,6 +4,23 @@ namespace ac.Models
 {
     internal class UISettings : INotifyPropertyChanged
     {
+        private bool _isActive;
+        public bool IsActive
+        {
+            get
+            {
+                return _isActive;
+            }
+            set
+            {
+                if (value != _isActive)
+                {
+                    _isActive = value;
+                    OnPropertyChanged(nameof(IsActive));
+                }
+            }
+        }
+
         private bool _isRandomizingMovement;
         public bool IsRandomizingMovement
         {
