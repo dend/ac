@@ -22,7 +22,7 @@ namespace ac
             UISettingsViewModel context = DataContext as UISettingsViewModel;
             context.UISettingsContainer.IsActive = !context.UISettingsContainer.IsActive;
 
-            ActivityController.SetActivityContext(context.UISettingsContainer);
+            context.UISettingsContainer.IsActive = ActivityController.SetActivityContext(context.UISettingsContainer);
         }
     }
 }

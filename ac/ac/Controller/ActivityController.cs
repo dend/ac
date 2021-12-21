@@ -25,6 +25,8 @@ namespace ac.Controller
 
     public static class ActivityController
     {
+        const int CURSOR_POSITION_INCREMENT = 12;
+
         [DllImport("user32.dll")]
         public static extern bool SetCursorPos(int X, int Y);
         [DllImport("user32.dll")]
@@ -34,21 +36,20 @@ namespace ac.Controller
         private static BackgroundWorker _worker;
         private static DispatcherTimer _timer;
 
-        public static void SetActivityContext(UISettings settings)
+        public static bool SetActivityContext(UISettings settings)
         {
-            _timer = new DispatcherTimer();
             if (settings.IsActive)
             {
-                // Application was activated.
+                _worker = new BackgroundWorker();
+                _worker.WorkerSupportsCancellation = true;
                 if (settings.TimedExecutionSeconds > 0)
                 {
+                    _timer = new DispatcherTimer();
                     _timer.Interval = new TimeSpan(0, 0, settings.TimedExecutionSeconds);
                     _timer.Tick += (s, e) =>
                     {
-                        _isWorking = false;
-                        _worker.CancelAsync();
-                        _worker.Dispose();
-                        _timer.Stop();
+                        settings.IsActive = false;
+                        SetActivityContext(settings);
                     };
                     _timer.Start();
                 }
@@ -60,10 +61,11 @@ namespace ac.Controller
                     while (_isWorking)
                     {
                         GenerateMouseMovements(settings.IsRandomizingMovement);
-                        Thread.Sleep(1000);
+                        Thread.Sleep(1500);
                     }
                 };
                 _worker.RunWorkerAsync();
+                return true;
             }
             else
             {
@@ -71,6 +73,7 @@ namespace ac.Controller
                 _worker.CancelAsync();
                 _worker.Dispose();
                 _timer.Stop();
+                return false;
             }
         }
 
@@ -78,7 +81,15 @@ namespace ac.Controller
         private static void GenerateMouseMovements(bool isRandomizingMovement)
         {
             GetCursorPos(out POINT position);
-            SetCursorPos(position.X + 12, position.Y + 10);
+
+            if (!isRandomizingMovement)
+            {
+                SetCursorPos(position.X + CURSOR_POSITION_INCREMENT, position.Y + CURSOR_POSITION_INCREMENT);
+            }
+            else
+            {
+                SetCursorPos(position.X + new Random().Next(1, CURSOR_POSITION_INCREMENT), position.Y + new Random().Next(1, CURSOR_POSITION_INCREMENT));
+            }
         }
     }
 }
