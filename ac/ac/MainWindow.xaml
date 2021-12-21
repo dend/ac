@@ -11,13 +11,14 @@
         SizeToContent="Height">
     <Window.Resources>
         <converters:StateToButtonLabelConverter x:Key="StateToButtonLabelConverter"></converters:StateToButtonLabelConverter>
+        <converters:InverseBooleanConverter x:Key="InverseBooleanConverter"></converters:InverseBooleanConverter>
     </Window.Resources>
     <Grid>
         <StackPanel>
             <GroupBox Margin="12" Header="Mouse">
                 <StackPanel>
-                    <CheckBox IsChecked="{Binding UISettingsContainer.IsRandomizingMovement}" x:Name="chkMouseRandomizePosition" Margin="12" Content="Randomize positioning"></CheckBox>
-                    <StackPanel Margin="12,0,12,12" Orientation="Horizontal">
+                    <CheckBox IsEnabled="{Binding UISettingsContainer.IsActive, Converter={StaticResource InverseBooleanConverter}}" IsChecked="{Binding UISettingsContainer.IsRandomizingMovement}" x:Name="chkMouseRandomizePosition" Margin="12" Content="Randomize positioning"></CheckBox>
+                    <StackPanel IsEnabled="{Binding UISettingsContainer.IsActive, Converter={StaticResource InverseBooleanConverter}}" Margin="12,0,12,12" Orientation="Horizontal">
                         <TextBlock Text="Timed execution:"></TextBlock>
                         <TextBox x:Name="txtMouseTimedExecutionValue" Width="80" Margin="12,0,0,0" InputScope="Number" Text="{Binding UISettingsContainer.TimedExecutionSeconds}"></TextBox>
                     </StackPanel>
