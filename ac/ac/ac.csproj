@@ -4,6 +4,10 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net5.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>ac-icon.ico</ApplicationIcon>
+    <Version>0.0.1</Version>
+    <Authors>System Utility</Authors>
+    <Company>System Developer</Company>
   </PropertyGroup>
 
 </Project>
