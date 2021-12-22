@@ -8,9 +8,6 @@ using System.Windows.Threading;
 
 namespace ac.Controller
 {
-    /// <summary>
-    /// Struct representing a point.
-    /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public struct POINT
     {
@@ -25,6 +22,7 @@ namespace ac.Controller
 
     public static class ActivityController
     {
+        static readonly char[] SignOptions = { '+', '-' };
         const int CURSOR_POSITION_INCREMENT = 12;
 
         [DllImport("user32.dll")]
@@ -40,12 +38,16 @@ namespace ac.Controller
         {
             if (settings.IsActive)
             {
-                _worker = new BackgroundWorker();
-                _worker.WorkerSupportsCancellation = true;
+                _worker = new BackgroundWorker
+                {
+                    WorkerSupportsCancellation = true
+                };
                 if (settings.TimedExecutionSeconds > 0)
                 {
-                    _timer = new DispatcherTimer();
-                    _timer.Interval = new TimeSpan(0, 0, settings.TimedExecutionSeconds);
+                    _timer = new DispatcherTimer
+                    {
+                        Interval = new TimeSpan(0, 0, settings.TimedExecutionSeconds)
+                    };
                     _timer.Tick += (s, e) =>
                     {
                         settings.IsActive = false;
@@ -61,7 +63,7 @@ namespace ac.Controller
                     while (_isWorking)
                     {
                         GenerateMouseMovements(settings.IsRandomizingMovement);
-                        Thread.Sleep(1500);
+                        Thread.Sleep(new Random().Next(1000, 2000));
                     }
                 };
                 _worker.RunWorkerAsync();
@@ -80,15 +82,30 @@ namespace ac.Controller
 
         private static void GenerateMouseMovements(bool isRandomizingMovement)
         {
+            int operatorValue = SignOptions[new Random().Next(0, SignOptions.Length)];
             GetCursorPos(out POINT position);
 
             if (!isRandomizingMovement)
             {
-                SetCursorPos(position.X + CURSOR_POSITION_INCREMENT, position.Y + CURSOR_POSITION_INCREMENT);
+                if (operatorValue == '+')
+                {
+                    SetCursorPos(position.X + CURSOR_POSITION_INCREMENT, position.Y + CURSOR_POSITION_INCREMENT);
+                }
+                else
+                {
+                    SetCursorPos(position.X - CURSOR_POSITION_INCREMENT, position.Y - CURSOR_POSITION_INCREMENT);
+                }
             }
             else
             {
-                SetCursorPos(position.X + new Random().Next(1, CURSOR_POSITION_INCREMENT), position.Y + new Random().Next(1, CURSOR_POSITION_INCREMENT));
+                if (operatorValue == '+')
+                {
+                    SetCursorPos(position.X + new Random().Next(1, CURSOR_POSITION_INCREMENT), position.Y + new Random().Next(1, CURSOR_POSITION_INCREMENT));
+                }
+                else
+                {
+                    SetCursorPos(position.X - new Random().Next(1, CURSOR_POSITION_INCREMENT), position.Y - new Random().Next(1, CURSOR_POSITION_INCREMENT));
+                }
             }
         }
     }
