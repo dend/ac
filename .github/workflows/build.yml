@@ -16,7 +16,10 @@ on:
       - '**/*.md'
       - '**/*.gitignore'
       - '**/*.gitattributes'
-      
+defaults:
+  run:
+    working-directory: ac
+
 jobs:
   build:
     strategy:
